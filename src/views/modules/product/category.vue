@@ -4,7 +4,8 @@
              @node-click="handleNodeClick"
              :expand-on-click-node="false"
              draggable
-             :allow-drop="allowDrop">
+             :allow-drop="allowDrop"
+             @node-drop="handleDrop">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span>
@@ -40,6 +41,7 @@
   export default {
     data () {
       return {
+        updateNodes: [],
         maxLevel: 0,
         menus: [],
         expandedKeys: [],
@@ -74,6 +76,7 @@
         this.title = '增加商品信息'
         Object.assign(this.$data.category, this.$options.data().category)
         this.category.parentCid = data.catId
+        // data.catLevel * 1作用是把data.catLevel变成数字类型
         this.category.catLevel = data.catLevel * 1 + 1
       },
 
@@ -108,7 +111,6 @@
         this.countNodeLevel(draggingNode.data)
         // deep 被拖动节点以及子节点的总共深度
         let deep = this.maxLevel - draggingNode.data.catLevel + 1
-        debugger
         if (type === 'inner') {
           return (deep + dropNode.level) <= 3
         } else {
@@ -116,9 +118,36 @@
         }
       },
 
+      handleDrop (draggingNode, dropNode, dropType, ev) {
+        console.log('handleDrop', draggingNode, dropNode, dropType)
+        // 1、 当前节点的最新的父节点id
+        let pCid = 0
+        // 拖拽后新的节点的兄弟节点
+        let siblings = null
+        if (dropType === 'inner') {
+          pCid = dropNode.data.catId
+          siblings = dropNode.childNodes
+        } else {
+          // dropType === 'before' || dropType === 'after'
+          // 有可能拖动到根节点, 根节点的.parent.data变成根节点数组,根节点的.parent.data.catId变成undefined
+          pCid = dropNode.parent.data.catId === undefined ? 0 : dropNode.parent.data.catId
+          siblings = dropNode.parent.childNodes
+        }
+        // 2、 当前拖拽节点的最新顺序
+        for (let i = 0; i < siblings.length; i++) {
+          // 如果遍历的是当前拖拽的节点，需要添加它的父Id，然后传入后台进行修改
+          // 此处所以属性的key对应后端CategoryEntity的属性名称
+          if (siblings[i].data.catId === draggingNode.data.catId) {
+            this.updateNodes.push({catId: siblings[i].data.catId, sort: i, parentCid: pCid})
+          } else {
+            this.updateNodes.push({catId: siblings[i].data.catId, sort: i})
+          }
+        }
+
+        // 3、 当前拖拽节点的最新层级
+      },
       countNodeLevel (node) {
         // 找到所有子节点，求出最大子节点的level
-        debugger
         if (node.children != null && node.children.length > 0) {
           for (let i = 0; i < node.children.length; i++) {
             if (node.children[i].catLevel > this.maxLevel) {
