@@ -1,10 +1,14 @@
-## 踩坑记录
-下载下来之后执行npm install安装依赖(保证安装了node.js和npm),过程中假如node-sass安装错误。执行以下步骤:
+# 踩坑记录
+## 下载下来之后执行npm install安装依赖(保证安装了node.js和npm),过程中假如node-sass安装错误。执行以下步骤:
 ①：npm rebuild node-sass
 ②：npm uninstall node-sass
 ③：npm config set registry http://registry.npm.taobao.org/
 ④：npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
 执行完之后可以尝试运行npm run dev
+## 编译报错或者页面的Console总是会出现莫名的错误
+书写代码完毕之后运行，编译期间的控制台或者页面的Console总是会出现莫名的错误，貌似是ESLint的语法检测。
+可以在idea的快捷键设置中搜索esl关键字，打开Fix ESLint Problem快捷键并设置1个常用的快捷键，例如ctrl+alt+小键盘的1,然后就只需要在书写完成之后使用快捷键进行整理即可。
+
 
 
 ## renren-fast-vue
