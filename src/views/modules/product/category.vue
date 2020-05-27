@@ -40,6 +40,7 @@
   export default {
     data () {
       return {
+        maxLevel: 0,
         menus: [],
         expandedKeys: [],
         dialogVisible: false,
@@ -97,6 +98,34 @@
           this.addCategory()
         } else {
           this.editCategory()
+        }
+      },
+
+      allowDrop (draggingNode, dropNode, type) {
+        // 被拖动的当前节点以及所在的父节点总层数不能大于3
+        console.log('AllowDrop', draggingNode, dropNode, type)
+        // 设置被拖动节点的最大子节点深度
+        this.countNodeLevel(draggingNode.data)
+        // deep 被拖动节点以及子节点的总共深度
+        let deep = this.maxLevel - draggingNode.data.catLevel + 1
+        debugger
+        if (type === 'inner') {
+          return (deep + dropNode.level) <= 3
+        } else {
+          return (deep + dropNode.parent.level) <= 3
+        }
+      },
+
+      countNodeLevel (node) {
+        // 找到所有子节点，求出最大子节点的level
+        debugger
+        if (node.children != null && node.children.length > 0) {
+          for (let i = 0; i < node.children.length; i++) {
+            if (node.children[i].catLevel > this.maxLevel) {
+              this.maxLevel = node.children[i].catLevel
+            }
+            this.countNodeLevel(node.children[i])
+          }
         }
       },
 
