@@ -2,7 +2,9 @@
   <div>
     <el-tree :data="menus" :props="defaultProps" :default-expanded-keys="expandedKeys" show-checkbox node-key="catId"
              @node-click="handleNodeClick"
-             :expand-on-click-node="false">
+             :expand-on-click-node="false"
+             draggable
+             :allow-drop="allowDrop">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span>
@@ -36,71 +38,70 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         menus: [],
         expandedKeys: [],
         dialogVisible: false,
-        title: "",
-        category: {name: "", parentCid: 0, catLevel: 0, showStatus: 1, sort: 0, catId: null, icon: "", productUnit: ""},
+        title: '',
+        category: {name: '', parentCid: 0, catLevel: 0, showStatus: 1, sort: 0, catId: null, icon: '', productUnit: ''},
         defaultProps: {
           children: 'children',
           label: 'name'
         }
-      };
+      }
     },
 
     methods: {
-      handleNodeClick(data) {
-        console.log(data);
+      handleNodeClick (data) {
+        console.log(data)
       },
 
-      getMenus() {
+      getMenus () {
         this.$http({
           url: this.$http.adornUrl('/product/category/list/tree'),
           method: 'get'
         }).then(({data}) => {
-          console.log("成功获取数据", data.data);
-          this.menus = data.data;
+          console.log('成功获取数据', data.data)
+          this.menus = data.data
         })
       },
 
-      append(data) {
-        console.log(data);
-        this.dialogVisible = true;
-        this.title = "增加商品信息";
-        Object.assign(this.$data.category, this.$options.data().category);
-        this.category.parentCid = data.catId;
-        this.category.catLevel = data.catLevel * 1 + 1;
+      append (data) {
+        console.log(data)
+        this.dialogVisible = true
+        this.title = '增加商品信息'
+        Object.assign(this.$data.category, this.$options.data().category)
+        this.category.parentCid = data.catId
+        this.category.catLevel = data.catLevel * 1 + 1
       },
 
-      edit(data) {
-        console.log("修改" + data);
+      edit (data) {
+        console.log('修改' + data)
         this.$http({
           url: this.$http.adornUrl(`/product/category/info/${data.catId}`),
-          method: 'get',
+          method: 'get'
         }).then(({data}) => {
-          this.dialogVisible = true;
-          this.title = "修改商品信息";
-          this.category.name = data.data.name;
-          this.category.catId = data.data.catId;
-          this.category.icon = data.data.icon;
-          this.category.productUnit = data.data.productUnit;
-          this.category.parentCid = data.data.parentCid;
+          this.dialogVisible = true
+          this.title = '修改商品信息'
+          this.category.name = data.data.name
+          this.category.catId = data.data.catId
+          this.category.icon = data.data.icon
+          this.category.productUnit = data.data.productUnit
+          this.category.parentCid = data.data.parentCid
         })
-
       },
 
-      submitData() {
-        if (this.title == "增加商品信息") {
-          this.addCategory();
+      submitData () {
+        if (this.title === '增加商品信息') {
+          this.addCategory()
         } else {
-          this.editCategory();
+          this.editCategory()
         }
       },
 
-      editCategory() {
-        let {catId, name, icon, productUnit} = this.category;
+      editCategory () {
+        let {catId, name, icon, productUnit} = this.category
         this.$http({
           url: this.$http.adornUrl('/product/category/update'),
           method: 'post',
@@ -109,17 +110,17 @@
           this.$message({
             type: 'success',
             message: '修改成功'
-          });
+          })
           // 关闭弹框
-          this.dialogVisible = false;
+          this.dialogVisible = false
           // 重新刷新菜单
-          this.getMenus();
-          this.expandedKeys = [this.category.parentCid];
+          this.getMenus()
+          this.expandedKeys = [this.category.parentCid]
         })
       },
 
-      addCategory() {
-        console.log(this.category);
+      addCategory () {
+        console.log(this.category)
         this.$http({
           url: this.$http.adornUrl('/product/category/save'),
           method: 'post',
@@ -128,53 +129,51 @@
           this.$message({
             type: 'success',
             message: '保存成功'
-          });
+          })
           // 关闭弹框
-          this.dialogVisible = false;
+          this.dialogVisible = false
           // 重新刷新菜单
-          this.getMenus();
-          this.expandedKeys = [this.category.parentCid];
+          this.getMenus()
+          this.expandedKeys = [this.category.parentCid]
         })
-
       },
 
-      remove(node, data) {
-        console.log(node, data);
+      remove (node, data) {
+        console.log(node, data)
 
         this.$confirm('是否删除【' + data.name + '】菜单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var ids = [data.catId];
+          var ids = [data.catId]
           this.$http({
             url: this.$http.adornUrl('/product/category/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
-            console.log("成功删除" + data.count + "条记录");
+            console.log('成功删除' + data.count + '条记录')
             this.$message({
               type: 'success',
               message: `成功删除${data.count}条记录!`
-            });
-            this.expandedKeys = [node.parent.data.catId];
+            })
+            this.expandedKeys = [node.parent.data.catId]
             // 重新刷新菜单
-            this.getMenus();
+            this.getMenus()
           })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });
-        });
-
-      },
+          })
+        })
+      }
     },
 
-    created() {
-      this.getMenus();
+    created () {
+      this.getMenus()
     }
-  };
+  }
 </script>
 
 <style>
