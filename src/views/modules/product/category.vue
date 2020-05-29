@@ -232,6 +232,9 @@
             }
             this.countNodeLevel(node.childNodes[i])
           }
+        } else {
+        // 如果是没有子节点则直接返回自身所在的等级
+          this.maxLevel = node.level
         }
       },
 
