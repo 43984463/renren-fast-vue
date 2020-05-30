@@ -40,7 +40,7 @@
         align="center"
         label="品牌logo地址">
         <template slot-scope="scope">
-      <img :src="scope.row.logo" style="width: 100px; height: 130px; object-fit: cover" alt="加载失败">
+      <img :src="scope.row.logo" v-if="scope.row.logo" style="width: 100px; height: 130px; object-fit: cover" alt="加载失败">
         </template>
       </el-table-column>
       <el-table-column
