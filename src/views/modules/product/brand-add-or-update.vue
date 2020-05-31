@@ -7,7 +7,7 @@
     <el-form-item label="品牌名" prop="name">
       <el-input v-model="dataForm.name" placeholder="品牌名"></el-input>
     </el-form-item>
-    <el-form-item label="品牌logo地址" prop="logo">
+    <el-form-item label="品牌logo" prop="logo">
     <single-upload v-model="dataForm.logo" placeholder="品牌logo地址"></single-upload>
     </el-form-item>
     <el-form-item label="介绍" prop="descript">
@@ -77,7 +77,7 @@
             { validator: (rule, value, callback) => {
               if (value === '') {
                 callback(new Error('排序字段必须填写'))
-              } else if (!Number.isInteger(value) || value < 0) {
+              } else if (!Number.isInteger(value * 1) || value < 0) {
                 callback(new Error('排序必须是一个大于等于0的整数'))
               } else {
                 callback()

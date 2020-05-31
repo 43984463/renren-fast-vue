@@ -38,9 +38,17 @@
         prop="logo"
         header-align="center"
         align="center"
-        label="品牌logo地址">
+        label="品牌logo">
         <template slot-scope="scope">
-      <img :src="scope.row.logo" v-if="scope.row.logo" style="width: 100px; height: 130px; object-fit: cover" alt="加载失败">
+     <!-- <img :src="scope.row.logo" v-if="scope.row.logo" style="width: 100px; height: 130px; object-fit: cover" alt="加载失败">-->
+          <el-popover
+            placement="top-start"
+            :open-delay="2000"
+            :close-delay="10"
+            trigger="hover">
+            <img :src="scope.row.logo" style="object-fit: cover; width: 47%; height: 47%"/>
+            <img slot="reference" :src="scope.row.logo"  style="width: 100px; height: 130px; object-fit: cover" alt="加载失败">
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
@@ -205,7 +213,7 @@
         let {brandId, showStatus} = rowData
         console.log(rowData)
         this.$http({
-          url: this.$http.adornUrl('/product/brand/update'),
+          url: this.$http.adornUrl('/product/brand/update/status'),
           method: 'post',
           data: this.$http.adornData({brandId, showStatus}, false)
         }).then(({data}) => {

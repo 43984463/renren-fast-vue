@@ -98,7 +98,7 @@ export default {
          console.log('上传成功...')
          this.showFileList = true
          this.fileList.pop()
-         this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace('${filename}', file.name) })
+         this.fileList.push({ name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace('${filename}', file.name) })
          this.emitInput(this.fileList[0].url)
    }
      }
