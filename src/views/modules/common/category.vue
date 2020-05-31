@@ -5,7 +5,6 @@
              :props="defaultProps"
              node-key="catId"
              ref="menuTrees"
-
              :filter-node-method="filterNode"
              empty-text="正在获取数据，请稍候。。。"
              highlight-current
