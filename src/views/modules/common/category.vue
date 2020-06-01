@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input placeholder="产品分类" clearable v-model="categroy" style="width: 90%"></el-input>
+    <el-input placeholder="产品分类" clearable v-model="category" style="width: 90%"></el-input>
     <el-tree :data="menus"
              :props="defaultProps"
              node-key="catId"
@@ -18,7 +18,7 @@
     data () {
       return {
         menus: [],
-        categroy: '',
+        category: '',
         defaultProps: {
           children: 'children',
           label: 'name'
@@ -53,7 +53,7 @@
     },
     watch: {
       // 根据名称筛选产品树
-      categroy (val) {
+      category (val) {
         this.$refs.menuTrees.filter(val)
       }
     }
