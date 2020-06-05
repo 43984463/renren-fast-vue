@@ -202,12 +202,12 @@ export default {
     },
     updateBrandStatus (data) {
       console.log('最新信息', data)
-      let { brandId, showStatus, name } = data
+      let { brandId, showStatus } = data
       // 发送请求修改状态
       this.$http({
         url: this.$http.adornUrl('/product/brand/update/status'),
         method: 'post',
-        data: this.$http.adornData({ brandId, showStatus, name }, false)
+        data: this.$http.adornData({ brandId, showStatus }, false)
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.$message({
