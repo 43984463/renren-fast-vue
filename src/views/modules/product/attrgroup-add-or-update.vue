@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增分组信息' : '修改分组信息'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     @closed="dialogClose"

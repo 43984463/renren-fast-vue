@@ -202,17 +202,25 @@ export default {
     },
     updateBrandStatus (data) {
       console.log('最新信息', data)
-      let { brandId, showStatus } = data
+      let { brandId, showStatus, name } = data
       // 发送请求修改状态
       this.$http({
         url: this.$http.adornUrl('/product/brand/update/status'),
         method: 'post',
-        data: this.$http.adornData({ brandId, showStatus }, false)
+        data: this.$http.adornData({ brandId, showStatus, name }, false)
       }).then(({ data }) => {
-        this.$message({
-          type: 'success',
-          message: '状态更新成功'
-        })
+        if (data && data.code === 0) {
+          this.$message({
+            type: 'success',
+            message: '状态更新成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '状态更新失败'
+          })
+        }
+        this.getDataList()
       })
     },
     // 每页数
