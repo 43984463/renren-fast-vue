@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.attrId ? '新增规格参数' : '修改规格参数'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     @closed="dialogClose"

@@ -89,7 +89,7 @@ export default {
       return new Promise((resolve, reject) => {
         policy()
           .then(response => {
-            console.log(`这是什么${filename}`)
+            // console.log(`这是什么${filename}`)
             _self.dataObj.policy = response.data.policy
             _self.dataObj.signature = response.data.signature
             _self.dataObj.ossaccessKeyId = response.data.accessid
