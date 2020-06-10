@@ -132,7 +132,7 @@ export default {
     // 处理更多指令
     handleCommand (row, command) {
       console.log('~~~~~', row, command)
-      if (command == 'stockSettings') {
+      if (command === 'stockSettings') {
         this.$router.push({ path: '/ware-sku', query: { skuId: row.skuId } })
       }
     },
@@ -165,6 +165,8 @@ export default {
         this.dataListLoading = false
       })
     },
+    previewHandle () {},
+    commentHandle () {},
     // 每页数
     sizeChangeHandle (val) {
       this.pageSize = val
